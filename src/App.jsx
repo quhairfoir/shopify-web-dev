@@ -8,6 +8,10 @@ import {GH_TOKEN, GH_USER} from '../secrets.js'
 class App extends Component {
   constructor () {
     super ()
+    this.state = {
+      myStars: false
+    }
+
     this.ghGet = this.ghGet.bind(this)
   }
 
@@ -16,17 +20,19 @@ class App extends Component {
       headers: 
         { Authorization: GH_TOKEN,
           Accept: 'application/vnd.github.v3+json' } })
-    .then(response => console.log(response))
+    .then(response => this.setState({myStars: response}))
   }
+
+  
 
   render() {
     return (
       <div>
         <header><h1>My GitHub Faves</h1></header>
-        <Search ghGet={this.ghGet}/>
+        <Search ghGet={this.ghGet} myStars={this.state.myStars} />
         <Faves />
       </div>
-    );
+    )
   }
 }
 export default App;
